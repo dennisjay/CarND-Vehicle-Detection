@@ -6,18 +6,6 @@ import cv2
 from lesson_functions import *
 from sklearn.externals import joblib
 
-dist_pickle = joblib.load( 'model.pkl' )
-svc = dist_pickle["svc"]
-X_scaler = dist_pickle["scaler"]
-orient = dist_pickle["orient"]
-pix_per_cell = dist_pickle["pix_per_cell"]
-cell_per_block = dist_pickle["cell_per_block"]
-spatial_size = dist_pickle["spatial_size"]
-hist_bins = dist_pickle["hist_bins"]
-
-img = mpimg.imread('./test_images/test1.jpg')
-
-
 # Define a single function that can extract features using hog sub-sampling and make predictions
 def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size, hist_bins):
     draw_img = np.copy(img)
@@ -89,6 +77,17 @@ def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, ce
     return draw_img, bboxes
 
 if __name__ == '__main__':
+    dist_pickle = joblib.load('model.pkl')
+    svc = dist_pickle["svc"]
+    X_scaler = dist_pickle["scaler"]
+    orient = dist_pickle["orient"]
+    pix_per_cell = dist_pickle["pix_per_cell"]
+    cell_per_block = dist_pickle["cell_per_block"]
+    spatial_size = dist_pickle["spatial_size"]
+    hist_bins = dist_pickle["hist_bins"]
+
+    img = mpimg.imread('./test_images/test1.jpg')
+
     ystart = 400
     ystop = 656
     scale = 1.5

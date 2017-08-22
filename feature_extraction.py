@@ -17,8 +17,8 @@ from lesson_functions import get_hog_features, color_hist, bin_spatial
 
 # Define a function to extract features from a list of images
 # Have this function call bin_spatial() and color_hist()
-def extract_features(imgs, cspace='YUV', orient=9,
-                        pix_per_cell=12, cell_per_block=4, hog_channel='ALL', nb_bins=64, spatial_size=(32, 32)):
+def extract_features(imgs, cspace, orient,
+                        pix_per_cell, cell_per_block, hog_channel, nb_bins, spatial_size):
     # Create a list to append feature vectors to
     features = []
     # Iterate through the list of images
