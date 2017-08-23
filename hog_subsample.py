@@ -39,6 +39,7 @@ def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, ce
     hog2 = get_hog_features(ch2, orient, pix_per_cell, cell_per_block, feature_vec=False)
     hog3 = get_hog_features(ch3, orient, pix_per_cell, cell_per_block, feature_vec=False)
 
+    all_boxes = []
     for xb in range(nxsteps):
         for yb in range(nysteps):
             ypos = yb * cells_per_step
@@ -65,16 +66,19 @@ def find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, ce
             # test_features = X_scaler.transform(np.hstack((shape_feat, hist_feat)).reshape(1, -1))
             test_prediction = svc.predict(test_features)
 
+            xbox_left = np.int(xleft * scale)
+            ytop_draw = np.int(ytop * scale)
+            win_draw = np.int(window * scale)
             if test_prediction == 1:
-                xbox_left = np.int(xleft * scale)
-                ytop_draw = np.int(ytop * scale)
-                win_draw = np.int(window * scale)
+
                 cv2.rectangle(draw_img, (xbox_left, ytop_draw + ystart),
                               (xbox_left + win_draw, ytop_draw + win_draw + ystart), (0, 0, 255), 6)
 
                 bboxes.append([(xbox_left, ytop_draw + ystart), (xbox_left + win_draw, ytop_draw + win_draw + ystart)])
 
-    return draw_img, bboxes
+            all_boxes.append([(xbox_left, ytop_draw + ystart), (xbox_left + win_draw, ytop_draw + win_draw + ystart)])
+
+    return draw_img, bboxes, all_boxes
 
 if __name__ == '__main__':
     dist_pickle = joblib.load('model.pkl')
@@ -92,7 +96,7 @@ if __name__ == '__main__':
     ystop = 656
     scale = 1.5
 
-    out_img, bboxes = find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size,
+    out_img, bboxes, _ = find_cars(img, ystart, ystop, scale, svc, X_scaler, orient, pix_per_cell, cell_per_block, spatial_size,
                     hist_bins)
 
     joblib.dump( bboxes, 'bboxes.pkl')
