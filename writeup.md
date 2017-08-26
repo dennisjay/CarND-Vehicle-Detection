@@ -46,7 +46,7 @@ The `feature_extraction.py` file contains a small main() method which was used t
 These are my final paramters for feature extraction:
 
 ```python
-cspace = `YUV`
+cspace = `YCrCb`
 orient = 9
 pix_per_cell = 8
 cell_per_block = 2

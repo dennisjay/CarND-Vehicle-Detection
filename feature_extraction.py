@@ -56,7 +56,7 @@ def extract_features(imgs, cspace, orient,
         spatial_features = bin_spatial(image, size=spatial_size)
 
         # Append the new feature vector to the features list
-        features.append(np.hstack([spatial_features, color_features, hog_features]))
+        features.append(np.hstack([hog_features]))
     # Return list of feature vectors
     return features
 
@@ -132,13 +132,13 @@ if __name__ == '__main__':
 
     parameters = []
 
-    for colorspace in ['YUV']:
+    for colorspace in ['YCrCb']:
         for orient in [9]:
-            for pix_per_cell in [12]:
-                for cell_per_block in [4]:
+            for pix_per_cell in [8]:
+                for cell_per_block in [2]:
                     for hog_channel in ['ALL']:
-                        for nb_bins in [64]:
-                            for spatial_size in [(64, 64)]:
+                        for nb_bins in [32]:
+                            for spatial_size in [(32, 32)]:
                                 accurency, hog_time, train_time, predict_time = train(cars, notcars, colorspace, orient, pix_per_cell, cell_per_block, hog_channel, nb_bins, spatial_size)
                                 params = {
                                     'colorspace': colorspace,
